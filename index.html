@@ -124,6 +124,7 @@ let map = [];
 let ex = 3, ey = 3;
 let blockSize;
 let gap = 8;
+let huaWinPop = false; //防止重复弹窗
 
 function resizeHua(){
     let dpr = window.devicePixelRatio || 1;
@@ -137,6 +138,7 @@ function resizeHua(){
 }
 
 function initHua(){
+    huaWinPop = false;
     let num = 1;
     for(let y = 0; y < 4; y++){
         map[y] = [];
@@ -159,6 +161,19 @@ function initHua(){
     drawHua();
 }
 
+// 判断华容道是否通关
+function checkHuaWin(){
+    let n = 1;
+    for(let y=0;y<4;y++){
+        for(let x=0;x<4;x++){
+            if(y===3&&x===3)continue;
+            if(map[y][x] !== n) return false;
+            n++;
+        }
+    }
+    return true;
+}
+
 function drawHua(){
     ctx1.clearRect(0,0,canvas1.width,canvas1.height);
     for(let y = 0; y < 4; y++){
@@ -175,6 +190,12 @@ function drawHua(){
                 ctx1.fillText(map[y][x], px+blockSize/2, py+blockSize/2);
             }
         }
+    }
+
+    // 通关弹窗
+    if(checkHuaWin() && !huaWinPop){
+        huaWinPop = true;
+        alert("恭喜你成为全球第6位zzh华容道成功者！找zzh可以领取奖励辣条一袋");
     }
 }
 
@@ -220,7 +241,7 @@ window.addEventListener("resize",()=>{resizeHua();drawHua();});
 resizeHua();
 initHua();
 
-//===== 全屏切水果（高度固定，难度只控速度）=====
+//===== 全屏切水果 =====
 let canvas2 = document.getElementById("c2");
 let ctx2 = canvas2.getContext("2d");
 let W,H;
@@ -252,6 +273,7 @@ let juice=[];
 let score=0;
 let touches = {};
 let rect;
+let scorePop = false; //1000分只弹一次
 
 function spawnFruit(){
     let isBomb = Math.random() < 0.15;
@@ -261,8 +283,8 @@ function spawnFruit(){
         x:Math.random()*(W-90)+45,
         y:H+30,
         r:W/12,
-        vx: baseVX * moveSpeedRate, // 仅速度受难度控制
-        vy: FIX_JUMP,                // 高度固定统一超高
+        vx: baseVX * moveSpeedRate,
+        vy: FIX_JUMP,
         g: FIX_GRAVITY,
         type:type,
         bomb:isBomb
@@ -296,6 +318,7 @@ function run(){
         if(checkCut(f)){
             if(f.bomb){
                 score = 0;
+                scorePop = false;
                 alert("踩到炸弹！分数清零！");
                 fruit.splice(i,1);
                 continue;
@@ -317,6 +340,12 @@ function run(){
         }
 
         if(f.y>H+60) fruit.splice(i,1);
+    }
+
+    // 切水果1000分弹窗
+    if(score >= 1000 && !scorePop){
+        scorePop = true;
+        alert("恭喜你成为全球第12位zzh切水果得分王！找zzh可以领取方便面一袋");
     }
 
     ctx2.lineWidth=7;
