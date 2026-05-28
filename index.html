@@ -28,88 +28,129 @@
 
         .header-box {
             text-align: center;
-            padding-top: 30px;
-            padding-bottom: 20px;
+            padding-top: 60px;
+            padding-bottom: 50px;
+            animation: fadeDown 1s ease;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header-box h1 {
-            font-size: 32px;
+            font-size: 52px;
             color: #fff;
             background: linear-gradient(90deg, #00f5d4, #6dd5ed, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 245, 212, 0.4);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
         }
 
         .header-box p {
             color: #c0c8e7;
-            font-size: 14px;
+            font-size: 18px;
+            letter-spacing: 2px;
         }
 
         .nav-btn {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
         .nav-btn button {
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 16px 45px;
+            font-size: 18px;
             font-weight: bold;
             border: none;
-            border-radius: 30px;
+            border-radius: 60px;
             cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
             color: #fff;
             background: linear-gradient(135deg, #4158d0, #c850c0);
+            box-shadow: 0 10px 30px rgba(65, 88, 208, 0.4);
+        }
+
+        .nav-btn button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .nav-btn button:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn button:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(200, 80, 192, 0.5);
         }
 
         .nav-btn button.active {
-            background: #fff;
+            background: linear-gradient(135deg, #ffffff, #e0e0ff);
             color: #24243e;
         }
 
         .game-card {
-            width: 90%;
-            max-width: 380px;
+            width: 580px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px;
             background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
         }
 
         .game-view {
             display: none;
             text-align: center;
+            animation: scaleIn 0.6s ease;
         }
 
         .game-view.show {
             display: block;
         }
 
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .game-title {
-            font-size: 18px;
-            color: #fff;
-            margin-bottom: 15px;
+            font-size: 26px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+            letter-spacing: 2px;
         }
 
         canvas {
-            border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.2);
-            background: #fff;
-            display: block;
-            margin: 0 auto;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255,255,255,0.2);
+            background: #fff; /* 强制白底，防止透明白屏 */
         }
 
         .desc {
+            width: 600px;
+            margin: 40px auto;
             text-align: center;
             color: #a9b4e8;
-            font-size: 12px;
-            margin-top: 15px;
-            line-height: 1.5;
+            font-size: 16px;
+            line-height: 2;
         }
     </style>
 </head>
@@ -121,29 +162,29 @@
     </div>
 
     <div class="nav-btn">
-        <button class="active" onclick="switchGame(1)">🧩 华容道</button>
-        <button onclick="switchGame(2)">⌨️ 打字游戏</button>
+        <button class="active" onclick="switchGame(1)">🧩 数字华容道</button>
+        <button onclick="switchGame(2)">⌨️ 打字挑战游戏</button>
     </div>
 
     <div class="game-card">
         <div id="g1" class="game-view show">
-            <div class="game-title">智慧数字华容道</div>
-            <canvas id="c1" width="350" height="350"></canvas>
+            <div class="game-title">智慧数字华容道（5×5高阶版）</div>
+            <canvas id="c1" width="500" height="500"></canvas>
         </div>
 
         <div id="g2" class="game-view">
-            <div class="game-title">打字闯关游戏</div>
-            <canvas id="c2" width="350" height="350"></canvas>
+            <div class="game-title">字母打字闯关游戏</div>
+            <canvas id="c2" width="420" height="420"></canvas>
         </div>
     </div>
 
     <div class="desc">
-        <p>🧩 点击空白格相邻方块移动</p>
-        <p>⌨️ 按键盘字母消除对应字符</p>
+        <p>🧩 华容道玩法：点击空白格相邻方块移动，挑战最少步数复原棋盘</p>
+        <p>⌨️ 打字玩法：敲击对应字母消除字符，难度缓慢递增，锻炼手速与眼力</p>
     </div>
 
+<!-- JS 放 body 最后，确保 DOM 加载完再执行，彻底解决白屏 -->
 <script>
-// 切换游戏
 function switchGame(num){
     document.querySelectorAll(".game-view").forEach(item=>{
         item.classList.remove("show");
@@ -155,31 +196,31 @@ function switchGame(num){
     });
 }
 
-// ==================== 华容道（修复版） ====================
+// ============ 华容道（防白屏加固版） ============
 const cv1 = document.getElementById("c1");
-const ctx1 = cv1.getContext("2d");
-const size = 70;
+if(!cv1) console.error("c1 canvas 不存在");
+const ctx1 = cv1?.getContext("2d");
+if(!ctx1) console.error("c1 获取 2d 上下文失败");
+
+const cell = 100;
 let map = [];
-let emptyX = 4, emptyY = 4;
+let emptyX = 4;
+let emptyY = 4;
 let step = 0;
 
-function initMap(){
-    let num = 1;
+function initGame(){
+    let n = 1;
     for(let y=0;y<5;y++){
         map[y] = [];
         for(let x=0;x<5;x++){
-            map[y][x] = num++;
+            map[y][x] = n++;
         }
     }
     map[4][4] = 0;
-    randomMap();
-    draw();
-}
 
-function randomMap(){
-    let d = [[-1,0],[1,0],[0,-1],[0,1]];
-    for(let i=0;i<1000;i++){
-        let r = d[Math.floor(Math.random()*4)];
+    let dirs = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(let i=0;i<1200;i++){
+        let r = dirs[Math.floor(Math.random()*8)];
         let nx = emptyX + r[0];
         let ny = emptyY + r[1];
         if(nx>=0&&nx<5&&ny>=0&&ny<5){
@@ -189,92 +230,118 @@ function randomMap(){
             emptyY = ny;
         }
     }
+    drawMap();
 }
 
-function draw(){
-    ctx1.clearRect(0,0,350,350);
+function drawMap(){
+    if(!ctx1) return;
+    ctx1.clearRect(0,0,500,500);
     for(let y=0;y<5;y++){
         for(let x=0;x<5;x++){
-            let v = map[y][x];
-            ctx1.fillStyle = v===0 ? "#eee" : "#4158d0";
-            ctx1.fillRect(x*size+2,y*size+2,size-4,size-4);
-            if(v!==0){
-                ctx1.fillStyle = "#fff";
-                ctx1.font = "28px Arial";
+            let val = map[y][x];
+            let gra = ctx1.createLinearGradient(x*cell,y*cell,x*cell+cell,y*cell+cell);
+            gra.addColorStop(0,"#f0f4ff");
+            gra.addColorStop(1,"#e8ecfb");
+            ctx1.fillStyle = gra;
+            ctx1.fillRect(x*cell+3,y*cell+3,cell-6,cell-6);
+
+            if(val !== 0){
+                ctx1.fillStyle = "#252b60";
+                ctx1.font = "42px Microsoft Yahei";
                 ctx1.textAlign = "center";
-                ctx1.fillText(v, x*size+size/2, y*size+size/2+8);
+                ctx1.fillText(val, x*cell+50, y*cell+62);
             }
         }
     }
-    ctx1.fillStyle = "#000";
-    ctx1.font = "14px Arial";
-    ctx1.fillText("步数："+step, 10, 20);
+    ctx1.fillStyle = "#ffffff"; // 修复：加引号
+    ctx1.font = "22px 微软雅黑";
+    ctx1.fillText("移动步数："+step,15,28);
 }
 
-cv1.addEventListener("click", e=>{
-    let x = Math.floor(e.offsetX/size);
-    let y = Math.floor(e.offsetY/size);
-    let dx = Math.abs(x-emptyX);
-    let dy = Math.abs(y-emptyY);
-    if((dx===1&&dy===0) || (dx===0&&dy===1)){
-        map[emptyY][emptyX] = map[y][x];
-        map[y][x] = 0;
-        emptyX = x;
-        emptyY = y;
-        step++;
-        draw();
-    }
-});
-
-initMap();
-
-// ==================== 打字游戏（修复版） ====================
-const cv2 = document.getElementById("c2");
-const ctx2 = cv2.getContext("2d");
-let chars = [];
-let score = 0;
-const keys = "abcdefghijklmnopqrstuvwxyz";
-
-function newChar(){
-    chars.push({
-        x: Math.random()*280+35,
-        y: 10,
-        c: keys[Math.floor(Math.random()*26)]
-    });
-}
-
-function drawGame(){
-    ctx2.clearRect(0,0,350,350);
-    ctx2.fillStyle = "#000";
-    ctx2.font = "16px Arial";
-    ctx2.fillText("分数："+score,10,25);
-
-    if(Math.random()<0.015) newChar();
-
-    for(let i=0;i<chars.length;i++){
-        let o = chars[i];
-        ctx2.fillStyle = "#c850c0";
-        ctx2.font = "26px Arial";
-        ctx2.fillText(o.c, o.x, o.y);
-        o.y += 0.4;
-    }
-
-    chars = chars.filter(i=>i.y<340);
-    requestAnimationFrame(drawGame);
-}
-
-document.addEventListener("keydown", e=>{
-    let k = e.key.toLowerCase();
-    for(let i=0;i<chars.length;i++){
-        if(chars[i].c === k){
-            chars.splice(i,1);
-            score++;
+cv1?.addEventListener("click", function(e){
+    let x = Math.floor(e.offsetX / cell);
+    let y = Math.floor(e.offsetY / cell);
+    let d = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(let i of d){
+        if(x+i[0]===emptyX && y+i[1]===emptyY){
+            map[emptyY][emptyX] = map[y][x];
+            map[y][x] = 0;
+            emptyX = x;
+            emptyY = y;
+            step++;
+            drawMap();
             return;
         }
     }
 });
 
-drawGame();
+initGame();
+
+// ============ 打字游戏（防白屏+慢速舒适版） ============
+const cv2 = document.getElementById("c2");
+if(!cv2) console.error("c2 canvas 不存在");
+const ctx2 = cv2?.getContext("2d");
+if(!ctx2) console.error("c2 获取 2d 上下文失败");
+
+let charList = [];
+let score = 0;
+let allChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+function addChar(){
+    let px = Math.random() * 350 + 30;
+    charList.push({
+        x: px,
+        y: 5,
+        text: allChar[Math.floor(Math.random() * allChar.length)]
+    });
+}
+
+function drawChar(){
+    if(!ctx2) return;
+    ctx2.clearRect(0,0,420,420);
+    ctx2.fillStyle = "#2c3e80";
+    ctx2.font = "24px 微软雅黑";
+    ctx2.fillText("当前分数：" + score, 12, 32);
+
+    let speed = 0.35 + score / 100;
+
+    for(let i=0;i<charList.length;i++){
+        let s = charList[i];
+        ctx2.fillStyle = "#1f2456";
+        ctx2.font = "28px Consolas";
+        ctx2.fillText(s.text, s.x, s.y);
+        s.y += speed;
+    }
+    charList = charList.filter(t => t.y < 415);
+}
+
+function runGame(){
+    if(Math.random() < 0.012){
+        addChar();
+    }
+    drawChar();
+    requestAnimationFrame(runGame);
+}
+
+document.addEventListener("keydown", function(e){
+    let key = e.key;
+    let idx = -1;
+    for(let i=0;i<charList.length;i++){
+        if(charList[i].text === key){
+            idx = i;
+            break;
+        }
+    }
+    if(idx !== -1){
+        score++;
+        charList.splice(idx,1);
+    }else{
+        score--;
+    }
+});
+
+runGame();
 </script>
+
 </body>
 </html>
